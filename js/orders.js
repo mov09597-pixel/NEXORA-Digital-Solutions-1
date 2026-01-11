@@ -55,7 +55,7 @@ export function createOrder() {
     status: 'pending'
   }
 
-  orders.unshift(order) // أحدث أولاً
+  orders.unshift(order)
   saveOrders(orders)
 
   // تحديث Wallet العميل
@@ -127,5 +127,6 @@ displayOrders()
 setWallet(getWallet())
 setOwnerWallet(getOwnerWallet())
 
+// Make global
 window.createOrder = createOrder
 window.displayOrders = displayOrders
