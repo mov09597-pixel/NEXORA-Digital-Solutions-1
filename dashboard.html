@@ -12,10 +12,16 @@
     <h1>NEXORA Digital - Owner: Mohamed Amr</h1>
   </header>
 
-  <!-- Wallet Section -->
+  <!-- Wallet الخاص بالعميل -->
   <section class="wallet-section">
     <h2>Wallet</h2>
     <p>Balance: $<span id="wallet_balance">0</span></p>
+  </section>
+
+  <!-- Wallet الخاص بالمالك -->
+  <section class="wallet-section">
+    <h2>Owner Wallet</h2>
+    <p>Balance: $<span id="owner_wallet">0</span></p>
   </section>
 
   <!-- New Order Section -->
@@ -27,6 +33,7 @@
       <option value="Design">Design</option>
       <option value="Website">Website</option>
     </select>
+    <input type="number" id="price" placeholder="Price ($)" value="100">
     <button onclick="createOrder()">Submit Order</button>
 
     <h3>Existing Orders:</h3>
