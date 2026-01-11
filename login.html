@@ -1,9 +1,29 @@
-<section class="login-section">
-  <h2>Login / Register</h2>
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="registerUser()">Register</button>
-  <button onclick="loginUser()">Login</button>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA Digital - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-<script type="module" src="js/mock-auth.js"></script>
+  <section class="login-section">
+    <h2>Login / Register</h2>
+
+    <!-- inputs الخاصة بالمستخدم -->
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <!-- أزرار التسجيل والدخول -->
+    <button onclick="registerUser(email.value, password.value)">Register</button>
+    <button onclick="loginUser(email.value, password.value)">Login</button>
+  </section>
+
+  <!-- استدعاء ملفات JS -->
+  <script type="module" src="js/supabase.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/orders.js"></script>
+
+</body>
+</html>
