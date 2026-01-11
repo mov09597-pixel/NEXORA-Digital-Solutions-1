@@ -1,21 +1,13 @@
-function getOrders() {
-  return JSON.parse(localStorage.getItem('orders') || '[]')
+function getOwnerWallet() {
+  return Number(localStorage.getItem('owner_wallet') || 0)
 }
 
-function saveOrders(orders) {
-  localStorage.setItem('orders', JSON.stringify(orders))
+function setOwnerWallet(amount) {
+  localStorage.setItem('owner_wallet', amount)
+  document.getElementById('owner_wallet').textContent = amount
 }
 
-function getWallet() {
-  return Number(localStorage.getItem('wallet_balance') || 0)
-}
-
-function setWallet(amount) {
-  localStorage.setItem('wallet_balance', amount)
-  document.getElementById('wallet_balance').textContent = amount
-}
-
-// إنشاء أوردر + تحديث المحفظة + تنفيذ بوت تلقائي
+// إنشاء أوردر + تحديث Wallet الخاص بالمالك + تنفيذ بوت
 export function createOrder() {
   const user_id = localStorage.getItem('user_id')
   if(!user_id) { alert('Please login first!'); return }
@@ -23,6 +15,7 @@ export function createOrder() {
   const project_name = document.getElementById('project_name').value
   const description = document.getElementById('description').value
   const category = document.getElementById('category').value
+  const price = Number(document.getElementById('price').value || 100) // مثال: 100$  
 
   const orders = getOrders()
   const order = { 
@@ -31,42 +24,24 @@ export function createOrder() {
     project_name, 
     description, 
     category, 
+    price, 
     status: 'pending' 
   }
   orders.push(order)
   saveOrders(orders)
 
-  // تحديث Wallet (نضيف 100$ لكل أوردر مثال)
-  let wallet = getWallet()
-  wallet += 100
-  setWallet(wallet)
+  // 💰 تحويل المبلغ مباشرة لمحفظتك كمالك الموقع
+  let ownerWallet = getOwnerWallet()
+  ownerWallet += price
+  setOwnerWallet(ownerWallet)
 
-  alert('Order submitted! Wallet updated + Bot is processing...')
+  alert(`Order submitted! $${price} added to your wallet. Bot is processing...`)
   displayOrders()
 
-  // Bot تلقائي: بعد 5 ثواني يحول الحالة لـ completed
+  // Bot: بعد 5 ثواني يحول الحالة لـ completed
   setTimeout(() => {
     order.status = 'completed'
     saveOrders(orders)
     displayOrders()
   }, 5000)
 }
-
-export function displayOrders() {
-  const user_id = localStorage.getItem('user_id')
-  const orders = getOrders().filter(o => o.user_id === user_id)
-  const ul = document.getElementById('order_list')
-  ul.innerHTML = ''
-  orders.forEach(o => {
-    const li = document.createElement('li')
-    li.textContent = `${o.project_name} - ${o.category} - ${o.status}`
-    ul.appendChild(li)
-  })
-}
-
-// عند فتح الصفحة، نعرض الأوردرات والمحفظة
-displayOrders()
-setWallet(getWallet())
-
-window.createOrder = createOrder
-window.displayOrders = displayOrders
