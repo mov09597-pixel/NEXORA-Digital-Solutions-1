@@ -1,0 +1,14 @@
+<section class="new-order">
+  <h2>Create New Order</h2>
+  <input type="text" id="project_name" placeholder="Project Name">
+  <textarea id="description" placeholder="Description"></textarea>
+  <select id="category">
+    <option value="Design">Design</option>
+    <option value="Website">Website</option>
+  </select>
+  <button onclick="createOrder()">Submit Order</button>
+  <h3>Existing Orders:</h3>
+  <ul id="order_list"></ul>
+</section>
+
+<script type="module" src="js/mock-orders.js"></script>
