@@ -1,41 +1,14 @@
-// Mock backend باستخدام localStorage
+import { supabase } from './supabase.js'
 
-function getUsers() {
-  return JSON.parse(localStorage.getItem('users') || '[]')
+export async function registerUser(email, password) {
+  const { data, error } = await supabase.auth.signUp({ email, password })
+  if (error) return alert(error.message)
+  alert('Registered successfully! Please login.')
 }
 
-function saveUsers(users) {
-  localStorage.setItem('users', JSON.stringify(users))
-}
-
-export function registerUser() {
-  const email = document.getElementById('email').value
-  const password = document.getElementById('password').value
-
-  const users = getUsers()
-  if(users.find(u => u.email === email)) {
-    alert('User already exists!')
-    return
-  }
-
-  users.push({ email, password, id: Date.now() })
-  saveUsers(users)
-  alert('Registered successfully! Now login.')
-}
-
-export function loginUser() {
-  const email = document.getElementById('email').value
-  const password = document.getElementById('password').value
-
-  const users = getUsers()
-  const user = users.find(u => u.email === email && u.password === password)
-  if(!user) {
-    alert('Invalid credentials!')
-    return
-  }
-
-  localStorage.setItem('user_id', user.id)
-  localStorage.setItem('user_email', user.email)
+export async function loginUser(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) return alert(error.message)
   alert('Login successful!')
-  window.location.href = 'dashboard.html'
+  location.href = 'dashboard.html'
 }
