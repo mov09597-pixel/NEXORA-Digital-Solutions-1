@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXORA Digital Dashboard</title>
+  <title>NEXORA Digital - Dashboard</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Header -->
+
   <header>
-    <h1>NEXORA Digital - Owner: Mohamed Amr</h1>
+    <h1>NEXORA Digital - Dashboard</h1>
+    <p>The owner: Mohamed Amr</p>
   </header>
 
-  <!-- Wallet العميل -->
+  <!-- Wallet الخاص بالعميل -->
   <section class="wallet-section">
-    <h2>Wallet</h2>
+    <h2>Your Wallet</h2>
     <p>Balance: $<span id="wallet_balance">0</span></p>
   </section>
 
@@ -24,28 +25,26 @@
     <p>Balance: $<span id="owner_wallet">0</span></p>
   </section>
 
-  <!-- New Order Section -->
-  <section class="new-order">
+  <!-- إنشاء أوردر جديد -->
+  <section class="order-section">
     <h2>Create New Order</h2>
     <input type="text" id="project_name" placeholder="Project Name">
-    <textarea id="description" placeholder="Description"></textarea>
-    <select id="category">
-      <option value="Design">Design</option>
-      <option value="Website">Website</option>
-    </select>
-    <input type="number" id="price" placeholder="Price ($)" value="100">
+    <input type="text" id="description" placeholder="Description">
+    <input type="text" id="category" placeholder="Category">
+    <input type="number" id="price" placeholder="Price">
     <button onclick="createOrder()">Submit Order</button>
+  </section>
 
-    <h3>Existing Orders:</h3>
+  <!-- قائمة الأوردرات -->
+  <section class="order-list-section">
+    <h2>Your Orders</h2>
     <ul id="order_list"></ul>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 NEXORA Digital Solutions</p>
-  </footer>
+  <!-- استدعاء ملفات JS -->
+  <script type="module" src="js/supabase.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/orders.js"></script>
 
-  <!-- Scripts -->
-  <script type="module" src="js/mock-orders.js"></script>
 </body>
 </html>
