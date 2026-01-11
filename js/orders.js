@@ -6,24 +6,50 @@ function saveOrders(orders) {
   localStorage.setItem('orders', JSON.stringify(orders))
 }
 
+function getWallet() {
+  return Number(localStorage.getItem('wallet_balance') || 0)
+}
+
+function setWallet(amount) {
+  localStorage.setItem('wallet_balance', amount)
+  document.getElementById('wallet_balance').textContent = amount
+}
+
+// إنشاء أوردر + تحديث المحفظة + تنفيذ بوت تلقائي
 export function createOrder() {
   const user_id = localStorage.getItem('user_id')
-  if(!user_id) {
-    alert('Please login first!')
-    return
-  }
+  if(!user_id) { alert('Please login first!'); return }
 
   const project_name = document.getElementById('project_name').value
   const description = document.getElementById('description').value
   const category = document.getElementById('category').value
 
   const orders = getOrders()
-  const order = { id: Date.now(), user_id, project_name, description, category, status: 'pending' }
+  const order = { 
+    id: Date.now(), 
+    user_id, 
+    project_name, 
+    description, 
+    category, 
+    status: 'pending' 
+  }
   orders.push(order)
   saveOrders(orders)
 
-  alert('Order submitted successfully!')
+  // تحديث Wallet (نضيف 100$ لكل أوردر مثال)
+  let wallet = getWallet()
+  wallet += 100
+  setWallet(wallet)
+
+  alert('Order submitted! Wallet updated + Bot is processing...')
   displayOrders()
+
+  // Bot تلقائي: بعد 5 ثواني يحول الحالة لـ completed
+  setTimeout(() => {
+    order.status = 'completed'
+    saveOrders(orders)
+    displayOrders()
+  }, 5000)
 }
 
 export function displayOrders() {
@@ -38,8 +64,9 @@ export function displayOrders() {
   })
 }
 
+// عند فتح الصفحة، نعرض الأوردرات والمحفظة
+displayOrders()
+setWallet(getWallet())
+
 window.createOrder = createOrder
 window.displayOrders = displayOrders
-
-// عرض الأوردرات عند فتح الصفحة
-displayOrders()
