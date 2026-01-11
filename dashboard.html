@@ -40,9 +40,12 @@
     <ul id="order_list"></ul>
   </section>
 
-  <!-- سكربت التشغيل -->
-  <script src="js/orders.js"></script>
   <script>
+    // ⚡️ User ID افتراضي لتشغيل الموقع مباشرة
+    if (!localStorage.getItem('user_id')) {
+      localStorage.setItem('user_id', 'demo_user');
+    }
+
     // =======================
     // Helper Functions
     // =======================
@@ -73,12 +76,12 @@
     }
 
     // =======================
-    // Bots Functions
+    // Bots
     // =======================
     function designBot(order) {
-      console.log(`🤖 Bot: Creating design for "${order.project_name}" in category "${order.category}"...`)
+      console.log(`🤖 Bot: Creating design for "${order.project_name}"...`)
       setTimeout(() => {
-        console.log(`✅ Design ready for "${order.project_name}"!`)
+        console.log(`✅ Design ready for "${order.project_name}"`)
         order.designLink = `https://example.com/designs/${order.id}`
         saveOrders(getOrders())
         displayOrders()
@@ -88,7 +91,7 @@
     function websiteBot(order) {
       console.log(`🤖 Bot: Building website for "${order.project_name}"...`)
       setTimeout(() => {
-        console.log(`✅ Website ready for "${order.project_name}"!`)
+        console.log(`✅ Website ready for "${order.project_name}"`)
         order.websiteLink = `https://example.com/websites/${order.id}`
         order.status = 'completed'
         saveOrders(getOrders())
@@ -100,14 +103,14 @@
     // Create Order
     // =======================
     function createOrder() {
-      const user_id = localStorage.getItem('user_id') || 'demo_user'
+      const user_id = localStorage.getItem('user_id')
       const project_name = document.getElementById('project_name').value
       const description = document.getElementById('description').value
       const category = document.getElementById('category').value
       const price = Number(document.getElementById('price').value) || 0
 
-      if(!project_name || !description || !category || price <= 0){
-        alert('Please fill all fields with valid values!')
+      if (!project_name || !description || !category || price <= 0) {
+        alert('Please fill all fields correctly!')
         return
       }
 
@@ -121,24 +124,17 @@
         price,
         status: 'pending'
       }
-
       orders.unshift(order)
       saveOrders(orders)
 
-      // تحديث المحفظة العميل
-      let wallet = getWallet()
-      wallet += price
-      setWallet(wallet)
-
-      // تحديث محفظة المالك
-      let ownerWallet = getOwnerWallet()
-      ownerWallet += price
-      setOwnerWallet(ownerWallet)
+      // تحديث المحفظة
+      setWallet(getWallet() + price)
+      setOwnerWallet(getOwnerWallet() + price)
 
       alert('Order submitted! Wallet updated + Bot is processing...')
       displayOrders()
 
-      // تشغيل البوتات
+      // تشغيل البوتات تلقائياً
       designBot(order)
       websiteBot(order)
     }
@@ -147,7 +143,7 @@
     // Display Orders
     // =======================
     function displayOrders() {
-      const user_id = localStorage.getItem('user_id') || 'demo_user'
+      const user_id = localStorage.getItem('user_id')
       const orders = getOrders().filter(o => o.user_id === user_id)
       const ul = document.getElementById('order_list')
       ul.innerHTML = ''
@@ -167,7 +163,6 @@
     setWallet(getWallet())
     setOwnerWallet(getOwnerWallet())
 
-    // Make global
     window.createOrder = createOrder
     window.displayOrders = displayOrders
   </script>
