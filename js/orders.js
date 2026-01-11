@@ -1,3 +1,20 @@
+function getOrders() {
+  return JSON.parse(localStorage.getItem('orders') || '[]')
+}
+
+function saveOrders(orders) {
+  localStorage.setItem('orders', JSON.stringify(orders))
+}
+
+function getWallet() {
+  return Number(localStorage.getItem('wallet_balance') || 0)
+}
+
+function setWallet(amount) {
+  localStorage.setItem('wallet_balance', amount)
+  document.getElementById('wallet_balance').textContent = amount
+}
+
 function getOwnerWallet() {
   return Number(localStorage.getItem('owner_wallet') || 0)
 }
@@ -15,7 +32,7 @@ export function createOrder() {
   const project_name = document.getElementById('project_name').value
   const description = document.getElementById('description').value
   const category = document.getElementById('category').value
-  const price = Number(document.getElementById('price').value || 100) // مثال: 100$  
+  const price = Number(document.getElementById('price').value || 100)
 
   const orders = getOrders()
   const order = { 
@@ -45,3 +62,23 @@ export function createOrder() {
     displayOrders()
   }, 5000)
 }
+
+export function displayOrders() {
+  const user_id = localStorage.getItem('user_id')
+  const orders = getOrders().filter(o => o.user_id === user_id)
+  const ul = document.getElementById('order_list')
+  ul.innerHTML = ''
+  orders.forEach(o => {
+    const li = document.createElement('li')
+    li.textContent = `${o.project_name} - ${o.category} - ${o.status} - $${o.price}`
+    ul.appendChild(li)
+  })
+}
+
+// عند فتح الصفحة، نعرض الأوردرات والمحفظة
+displayOrders()
+setWallet(getWallet())
+setOwnerWallet(getOwnerWallet())
+
+window.createOrder = createOrder
+window.displayOrders = displayOrders
