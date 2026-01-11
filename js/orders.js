@@ -71,9 +71,7 @@ export function createOrder() {
   alert('Order submitted! Wallet updated + Bot is processing...')
   displayOrders()
 
-  // =======================
   // Bots تلقائي
-  // =======================
   designBot(order)
   websiteBot(order)
 }
@@ -105,7 +103,7 @@ function designBot(order) {
     order.designLink = `https://example.com/designs/${order.id}`
     saveOrders(getOrders())
     displayOrders()
-  }, 5000) // 5 ثواني للتنفيذ
+  }, 5000)
 }
 
 // =======================
@@ -119,7 +117,7 @@ function websiteBot(order) {
     order.status = 'completed'
     saveOrders(getOrders())
     displayOrders()
-  }, 8000) // 8 ثواني للتنفيذ
+  }, 8000)
 }
 
 // =======================
@@ -129,6 +127,5 @@ displayOrders()
 setWallet(getWallet())
 setOwnerWallet(getOwnerWallet())
 
-// Make global
 window.createOrder = createOrder
 window.displayOrders = displayOrders
