@@ -1,14 +1,44 @@
-<section class="new-order">
-  <h2>Create New Order</h2>
-  <input type="text" id="project_name" placeholder="Project Name">
-  <textarea id="description" placeholder="Description"></textarea>
-  <select id="category">
-    <option value="Design">Design</option>
-    <option value="Website">Website</option>
-  </select>
-  <button onclick="createOrder()">Submit Order</button>
-  <h3>Existing Orders:</h3>
-  <ul id="order_list"></ul>
-</section>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA Digital Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header>
+    <h1>NEXORA Digital - Owner: Mohamed Amr</h1>
+  </header>
 
-<script type="module" src="js/mock-orders.js"></script>
+  <!-- Wallet Section -->
+  <section class="wallet-section">
+    <h2>Wallet</h2>
+    <p>Balance: $<span id="wallet_balance">0</span></p>
+  </section>
+
+  <!-- New Order Section -->
+  <section class="new-order">
+    <h2>Create New Order</h2>
+    <input type="text" id="project_name" placeholder="Project Name">
+    <textarea id="description" placeholder="Description"></textarea>
+    <select id="category">
+      <option value="Design">Design</option>
+      <option value="Website">Website</option>
+    </select>
+    <button onclick="createOrder()">Submit Order</button>
+
+    <h3>Existing Orders:</h3>
+    <ul id="order_list"></ul>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 NEXORA Digital Solutions</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/mock-orders.js"></script>
+</body>
+</html>
