@@ -1,79 +1,101 @@
-// ضمان وجود user
-if(!localStorage.getItem("user_id")){
-  localStorage.setItem("user_id","demo_user")
+// =======================
+// Fake Login Auto Create User
+// =======================
+if (!localStorage.getItem('user_id')) {
+  localStorage.setItem('user_id', 'demo_user')
 }
 
-function getOrders(){
-  return JSON.parse(localStorage.getItem("orders") || "[]")
+// =======================
+// Helper Functions
+// =======================
+function getOrders() {
+  return JSON.parse(localStorage.getItem('orders') || '[]')
 }
 
-function saveOrders(o){
-  localStorage.setItem("orders", JSON.stringify(o))
+function saveOrders(orders) {
+  localStorage.setItem('orders', JSON.stringify(orders))
 }
 
-function getWallet(){
-  return Number(localStorage.getItem("wallet_balance") || 0)
+function getWallet() {
+  return Number(localStorage.getItem('wallet_balance') || 0)
 }
 
-function getOwnerWallet(){
-  return Number(localStorage.getItem("owner_wallet_balance") || 0)
+function setWallet(amount) {
+  localStorage.setItem('wallet_balance', amount)
+  document.getElementById('wallet_balance').textContent = amount
 }
 
-function setWallet(v){
-  localStorage.setItem("wallet_balance", v)
-  const el = document.getElementById("wallet_balance")
-  if(el) el.innerText = v
+function getOwnerWallet() {
+  return Number(localStorage.getItem('owner_wallet_balance') || 0)
 }
 
-function setOwnerWallet(v){
-  localStorage.setItem("owner_wallet_balance", v)
-  const el = document.getElementById("owner_wallet")
-  if(el) el.innerText = v
+function setOwnerWallet(amount) {
+  localStorage.setItem('owner_wallet_balance', amount)
+  document.getElementById('owner_wallet').textContent = amount
 }
 
-function displayOrders(){
-  const ul = document.getElementById("order_list")
-  if(!ul) return
-  ul.innerHTML = ""
-  const orders = getOrders()
-  orders.forEach(o=>{
-    const li = document.createElement("li")
-    li.textContent = `${o.project_name || o.project} - ${o.status}`
-    ul.appendChild(li)
-  })
-}
+// =======================
+// Create Order
+// =======================
+function createOrder() {
+  const user_id = localStorage.getItem('user_id')
 
-function createOrder(){
-  const project = document.getElementById("project_name")?.value || "New Project"
-  const price = Number(document.getElementById("price")?.value || 100)
+  const project_name = document.getElementById('project_name').value
+  const description = document.getElementById('description').value
+  const category = document.getElementById('category').value
+  const price = Number(document.getElementById('price').value) || 0
 
-  const orders = getOrders()
-  const order = {
-    id: Date.now(),
-    project: project,
-    status: "processing"
+  if (!project_name || !description || !category || price <= 0) {
+    alert('Please fill all fields correctly')
+    return
   }
 
-  orders.push(order)
+  const orders = getOrders()
+
+  const order = {
+    id: Date.now(),
+    user_id,
+    project_name,
+    description,
+    category,
+    price,
+    status: 'completed'
+  }
+
+  orders.unshift(order)
   saveOrders(orders)
 
+  // Update wallets
   setWallet(getWallet() + price)
   setOwnerWallet(getOwnerWallet() + price)
 
   displayOrders()
 
-  // Bot simulation
-  setTimeout(()=>{
-    order.status = "completed"
-    saveOrders(orders)
-    displayOrders()
-  },4000)
+  alert("Order created successfully ✅")
 }
 
-// ربط الزر
-window.createOrder = createOrder
+// =======================
+// Display Orders
+// =======================
+function displayOrders() {
+  const user_id = localStorage.getItem('user_id')
+  const orders = getOrders().filter(o => o.user_id === user_id)
+  const ul = document.getElementById('order_list')
+  ul.innerHTML = ''
 
-// تشغيل أول تحميل
+  orders.forEach(o => {
+    const li = document.createElement('li')
+    li.textContent = `${o.project_name} - ${o.category} - $${o.price} - ${o.status}`
+    ul.appendChild(li)
+  })
+}
+
+// =======================
+// Init
+// =======================
+displayOrders()
 setWallet(getWallet())
 setOwnerWallet(getOwnerWallet())
-displayOrders()
+
+// Make functions global for HTML button
+window.createOrder = createOrder
