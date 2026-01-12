@@ -1,5 +1,5 @@
 // =======================
-// Fake Login Auto Create User
+// Auto Fake Login
 // =======================
 if (!localStorage.getItem('user_id')) {
   localStorage.setItem('user_id', 'demo_user')
@@ -38,8 +38,6 @@ function setOwnerWallet(amount) {
 // Create Order
 // =======================
 function createOrder() {
-  const user_id = localStorage.getItem('user_id')
-
   const project_name = document.getElementById('project_name').value
   const description = document.getElementById('description').value
   const category = document.getElementById('category').value
@@ -54,7 +52,7 @@ function createOrder() {
 
   const order = {
     id: Date.now(),
-    user_id,
+    user_id: localStorage.getItem('user_id'),
     project_name,
     description,
     category,
@@ -91,11 +89,11 @@ function displayOrders() {
 }
 
 // =======================
-// Init
+// Init on Load
 // =======================
 displayOrders()
 setWallet(getWallet())
 setOwnerWallet(getOwnerWallet())
 
-// Make functions global for HTML button
+// Make function visible to HTML button
 window.createOrder = createOrder
