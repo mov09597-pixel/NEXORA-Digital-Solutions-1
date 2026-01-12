@@ -1,25 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>NEXORA Order</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>NEXORA Order</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header>
   <h1>NEXORA Digital</h1>
+  <p>The owner: Mohamed Amr</p>
 </header>
 
 <section class="order-section">
   <h2>Create Your Order</h2>
+  
+  <p>Selected Service: <span id="service_name"></span></p>
 
   <input id="project_name" placeholder="Project Name">
-  <textarea id="description" placeholder="Describe what you need"></textarea>
-  <input id="price" placeholder="Your Budget ($)">
-
+  <input id="description" placeholder="Project Description">
+  <input id="price" type="number" placeholder="Price ($)">
+  
   <button onclick="submitOrder()">Submit Order</button>
+
+  <p id="result"></p>
 </section>
 
-<script src="js/order-page.js"></script>
+<script>
+ // عرض نوع الخدمة المختارة
+ document.getElementById("service_name").innerText =
+   localStorage.getItem("selected_service") || "None"
+
+ // user demo auto id
+ if(!localStorage.getItem("user_id")){
+   localStorage.setItem("user_id","demo_user")
+ }
+
+ function submitOrder(){
+   const order = {
+     id: Date.now(),
+     service: localStorage.getItem("selected_service"),
+     project: document.getElementById("project_name").value,
+     desc: document.getElementById("description").value,
+     price: document.getElementById("price").value,
+     status: "processing"
+   }
+
+   let orders = JSON.parse(localStorage.getItem("orders") || "[]")
+   orders.push(order)
+   localStorage.setItem("orders", JSON.stringify(orders))
+
+   document.getElementById("result").innerText =
+     "✅ Order submitted successfully!"
+ }
+</script>
+
 </body>
 </html>
