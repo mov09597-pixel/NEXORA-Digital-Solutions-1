@@ -1,15 +1,14 @@
-<div class="service-card" onclick="location.href='order.html?type=website'">
-  AI Website Builder
-</div>
+<div class="service-card" onclick="goToOrder('website')">AI Website Builder</div>
+<div class="service-card" onclick="goToOrder('logo')">Brand & Logo Design</div>
+<div class="service-card" onclick="goToOrder('bots')">Automation Bots</div>
+<div class="service-card" onclick="goToOrder('management')">Order Management</div>
 
-<div class="service-card" onclick="location.href='order.html?type=logo'">
-  Brand & Logo Design
-</div>
-
-<div class="service-card" onclick="location.href='order.html?type=bots'">
-  Automation Bots
-</div>
-
-<div class="service-card" onclick="location.href='order.html?type=management'">
-  Order Management
-</div>
+<script>
+function goToOrder(type) {
+  // نخزن نوع الخدمة المختارة
+  localStorage.setItem('selected_service', type)
+  
+  // نفتح صفحة الأوردر
+  window.location.href = "order.html"
+}
+</script>
